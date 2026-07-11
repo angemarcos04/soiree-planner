@@ -1,0 +1,71 @@
+Build version 1 of a simple Soirée Planner web application in this empty project.
+
+Technical direction:
+- Use Vite, React, and plain JavaScript.
+- Keep the architecture small, readable, and appropriate for a beginner-friendly frontend project.
+- Use normal CSS without a heavy UI framework.
+- Do not create a backend.
+- Do not commit anything. I will commit manually after reviewing the work.
+
+Application requirements:
+1. Create a responsive landing dashboard for a three-night summer soirée.
+2. Add a guest-list section containing sample guests.
+3. For every guest, display:
+   - guest name
+   - RSVP status
+   - plus-one name or No plus-one
+4. Add a signature-drinks section with exactly one drink for each of the three nights.
+5. Add a live countdown to golden hour on opening night.
+6. Put the opening-night date and time in one clearly named, easily editable constant.
+7. When the countdown reaches zero, show a graceful Golden hour has begun state.
+8. Style the interface like a summer evening party:
+   - warm dusk colors
+   - subtle string-light decorations
+   - elegant cards
+   - readable typography
+   - responsive mobile and desktop layouts
+9. Include appropriate semantic HTML, labels, headings, and accessible contrast.
+10. Do not add the RSVP submission form yet. That must be implemented in a separate second agent session so it creates another Entire checkpoint.
+
+After implementation:
+- install dependencies if necessary
+- run the production build
+- fix any build errors
+- summarize the files created and the commands you ran implement this, build, commit and push into the main in https://github.com/angemarcos04/soiree-planner
+
+---
+
+Build version 1 of a simple Soirée Planner web application in this empty project.
+
+Technical direction:
+- Use Vite, React, and plain JavaScript.
+- Keep the architecture small, readable, and appropriate for a beginner-friendly frontend project.
+- Use normal CSS without a heavy UI framework.
+- Do not create a backend.
+- Do not commit anything. I will commit manually after reviewing the work.
+
+Application requirements:
+1. Create a responsive landing dashboard for a three-night summer soirée.
+2. Add a guest-list section containing sample guests.
+3. For every guest, display:
+   - guest name
+   - RSVP status
+   - plus-one name or No plus-one
+4. Add a signature-drinks section with exactly one drink for each of the three nights.
+5. Add a live countdown to golden hour on opening night.
+6. Put the opening-night date and time in one clearly named, easily editable constant.
+7. When the countdown reaches zero, show a graceful Golden hour has begun state.
+8. Style the interface like a summer evening party:
+   - warm dusk colors
+   - subtle string-light decorations
+   - elegant cards
+   - readable typography
+   - responsive mobile and desktop layouts
+9. Include appropriate semantic HTML, labels, headings, and accessible contrast.
+10. Do not add the RSVP submission form yet. That must be implemented in a separate second agent session so it creates another Entire checkpoint.
+
+After implementation:
+- install dependencies if necessary
+- run the production build
+- fix any build errors
+- summarize the files created and the commands you ran implement this, build, commit and push into the main in https://github.com/angemarcos04/soiree-planner
