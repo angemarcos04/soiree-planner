@@ -1,5 +1,7 @@
 ﻿export const OPENING_NIGHT_GOLDEN_HOUR = '2026-08-15T18:30:00+08:00';
 
+export const MAX_CONFIRMED_ATTENDEES = 120;
+
 export const soireeNights = [
   {
     label: 'Night 1',

@@ -1,5 +1,24 @@
 ﻿import { useEffect, useState } from 'react';
-import { OPENING_NIGHT_GOLDEN_HOUR, soireeNights, guests } from './data';
+import {
+  MAX_CONFIRMED_ATTENDEES,
+  OPENING_NIGHT_GOLDEN_HOUR,
+  soireeNights,
+  guests,
+} from './data';
+
+function hasPlusOne(guest) {
+  return guest.plusOne.trim() !== '' && guest.plusOne !== 'No plus-one';
+}
+
+function getPartySize(guest) {
+  return 1 + Number(hasPlusOne(guest));
+}
+
+function countConfirmedAttendees(guestList) {
+  return guestList
+    .filter((guest) => guest.rsvp === 'Confirmed')
+    .reduce((total, guest) => total + getPartySize(guest), 0);
+}
 
 function getTimeLeft(target) {
   const now = new Date();
@@ -58,7 +77,63 @@ function TimeUnit({ value, label }) {
   );
 }
 
+function GuestItem({ guest }) {
+  const statusClass = guest.rsvp.toLowerCase().replaceAll(' ', '-');
+
+  return (
+    <li className='guest-item'>
+      <div>
+        <h3>{guest.name}</h3>
+        <p className='guest-meta'>
+          RSVP: <span className={`status-badge status-${statusClass}`}>{guest.rsvp}</span>
+        </p>
+      </div>
+      <p className='plus-one'>{guest.plusOne}</p>
+    </li>
+  );
+}
+
 function App() {
+  const [guestList, setGuestList] = useState(guests);
+  const [submissionMessage, setSubmissionMessage] = useState('');
+
+  const confirmedAttendeeCount = countConfirmedAttendees(guestList);
+  const spotsRemaining = Math.max(MAX_CONFIRMED_ATTENDEES - confirmedAttendeeCount, 0);
+  const confirmedAndOtherGuests = guestList.filter((guest) => guest.rsvp !== 'Waitlisted');
+  const waitlistedGuests = guestList.filter((guest) => guest.rsvp === 'Waitlisted');
+
+  function handleRsvpSubmit(event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const name = formData.get('name').trim();
+    const response = formData.get('response');
+    const plusOneName = formData.get('plusOne').trim();
+    const plusOne = plusOneName || 'No plus-one';
+    const partySize = 1 + Number(plusOneName !== '');
+
+    let rsvp = 'Regrets';
+    if (response === 'attending') {
+      rsvp = partySize <= spotsRemaining ? 'Confirmed' : 'Waitlisted';
+    }
+
+    setGuestList((currentGuests) => [
+      ...currentGuests,
+      { name, rsvp, plusOne },
+    ]);
+
+    if (rsvp === 'Confirmed') {
+      setSubmissionMessage(`${name}'s party is confirmed.`);
+    } else if (rsvp === 'Waitlisted') {
+      setSubmissionMessage(`${name}'s entire party was added to the waitlist.`);
+    } else {
+      setSubmissionMessage(`${name}'s regrets were recorded.`);
+    }
+
+    form.reset();
+  }
+
   return (
     <main className="page-shell">
       <section className="hero card">
@@ -110,16 +185,58 @@ function App() {
 
         <article className="card">
           <h2>Guest list</h2>
+          <div className='capacity-summary' aria-live='polite'>
+            <strong>{spotsRemaining} spots remaining</strong>
+            <span>{confirmedAttendeeCount} of {MAX_CONFIRMED_ATTENDEES} attendees confirmed</span>
+          </div>
+
+          <form className='rsvp-form' onSubmit={handleRsvpSubmit}>
+            <h3>RSVP</h3>
+            <p className='section-copy'>Add your response and optional plus-one.</p>
+
+            <label htmlFor='guest-name'>Guest name</label>
+            <input id='guest-name' name='name' type='text' autoComplete='name' required />
+
+            <fieldset>
+              <legend>Will you attend?</legend>
+              <label className='radio-option'>
+                <input name='response' type='radio' value='attending' defaultChecked />
+                Attending
+              </label>
+              <label className='radio-option'>
+                <input name='response' type='radio' value='regrets' />
+                Regrets
+              </label>
+            </fieldset>
+
+            <label htmlFor='plus-one-name'>Plus-one name <span>(optional)</span></label>
+            <input id='plus-one-name' name='plusOne' type='text' autoComplete='off' />
+
+            <button type='submit'>Submit RSVP</button>
+          </form>
+
+          {submissionMessage && (
+            <p className='submission-message' role='status'>{submissionMessage}</p>
+          )}
+
+          <section className='waitlist-section' aria-labelledby='waitlist-heading'>
+            <h3 id='waitlist-heading'>Waitlist</h3>
+            {waitlistedGuests.length > 0 ? (
+              <ul className='guest-list'>
+                {waitlistedGuests.map((guest, index) => (
+                  <GuestItem key={`${guest.name}-${index}`} guest={guest} />
+                ))}
+              </ul>
+            ) : (
+              <p className='empty-state'>No one is waiting for a spot.</p>
+            )}
+          </section>
+
+          <h3 className='list-heading'>Guest responses</h3>
           <p className="section-copy">Sample guests with RSVP status and plus-one details.</p>
           <ul className="guest-list">
-            {guests.map((guest) => (
-              <li key={guest.name} className="guest-item">
-                <div>
-                  <h3>{guest.name}</h3>
-                  <p className="guest-meta">RSVP: {guest.rsvp}</p>
-                </div>
-                <p className="plus-one">{guest.plusOne}</p>
-              </li>
+            {confirmedAndOtherGuests.map((guest, index) => (
+              <GuestItem key={`${guest.name}-${index}`} guest={guest} />
             ))}
           </ul>
         </article>
