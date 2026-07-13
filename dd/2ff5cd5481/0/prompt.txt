@@ -1,0 +1,42 @@
+Implement the first Day 2 feature for the existing Soirée Planner: a
+fire-code guest cap and waitlist.
+
+Reason for the feature:
+The venue's fire code allows no more than 120 confirmed attendees.
+The count must include both primary guests and their plus-ones.
+
+Requirements:
+1. Inspect the existing application before changing it.
+2. Preserve the current framework, component structure, visual design,
+   RSVP form, countdown, guest list, and drinks features.
+3. Introduce a clearly named maximum-capacity constant set to 120.
+4. Count confirmed attendees as individual people:
+   - one attending primary guest counts as one
+   - a non-empty plus-one counts as one additional attendee
+   - regrets do not consume capacity
+   - waitlisted people do not consume confirmed capacity
+5. When a new attending RSVP would exceed the remaining capacity, place
+   the entire RSVP party on the waitlist instead of partially confirming it.
+6. Keep waitlisted RSVPs in stable signup order.
+7. Add a clearly visible "spots remaining" count.
+8. Add a separate waitlist section below or near the confirmed guest list.
+9. Clearly distinguish confirmed, waitlisted, and regrets statuses.
+10. Keep the implementation client-side and consistent with the existing
+    state-management approach.
+11. Ensure newly submitted RSVPs update the confirmed count, remaining
+    spots, and waitlist immediately.
+12. Preserve accessibility and responsive behavior.
+13. Do not perform unrelated refactors.
+14. Do not commit. I will commit manually after reviewing the changes.
+
+Validation:
+- Run the production build.
+- Fix any build or lint errors caused by the implementation.
+- Explain the capacity calculation and waitlist decision logic.
+- List every file changed.
+
+---
+
+Review the implementation against every requirement. Check edge cases
+around plus-ones, regrets, exact capacity, and an RSVP that would exceed
+the remaining capacity. Run the production build again. Do not commit.111
